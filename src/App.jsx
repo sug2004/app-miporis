@@ -20,19 +20,27 @@ function App() {
   const [subscriptionValid, setSubscriptionValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
+  // Handle token from URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+      Cookies.set('token', token, { secure: true, sameSite: 'Strict', expires: 5 });
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   const token = Cookies.get('token');
 
-  useEffect(() => {
-    if (!token && typeof window !== 'undefined') {
-      window.location.replace("https://miporis.com/login"); // Redirect to external login page
+  let decodedToken = null;
+  if (token) {
+    try {
+      decodedToken = jwtDecode(token);
+    } catch (error) {
+      console.error('Invalid token:', error);
+      Cookies.remove('token');
     }
-  }, [token]);
-
-  if (!token) {
-    return null;
   }
-
-  const decodedToken = jwtDecode(token);
 
   useEffect(() => {
     if (decodedToken && decodedToken.id && decodedToken.id !== '') {
@@ -61,17 +69,13 @@ function App() {
           console.error('Error during API requests:', error);
         });
     }
-  }, []);
+  }, [decodedToken]);
 
   return (
     <>
-      {/* Main Application Content */}
       {subscriptionValid && (
         <div className="flex flex-col h-screen bg-[#EFEFEF] overflow-hidden">
-          {/* SaaSHeader for all routes */}
           <SaaSHeader />
-          
-          {/* Main Content Area */}
           <main className="flex-1 overflow-y-auto">
             <Routes>
               <Route path="/" element={<ComplianceDashboard />} />
@@ -87,25 +91,13 @@ function App() {
         </div>
       )}
 
-      {/* Subscription Invalid Overlay */}
       {!subscriptionValid && showMessage && (
-        <div 
-          className="fixed inset-0 flex items-center justify-center bg-[#FFF5E1] z-50 p-4"
-          role="dialog"
-          aria-labelledby="subscription-error-title"
-          aria-describedby="subscription-error-description"
-        >
+        <div className="fixed inset-0 flex items-center justify-center bg-[#FFF5E1] z-50 p-4">
           <div className="bg-red-500 px-6 py-8 rounded-xl max-w-md w-full shadow-2xl text-center">
-            <h2 
-              id="subscription-error-title"
-              className="text-white text-lg font-bold mb-4 leading-tight"
-            >
+            <h2 className="text-white text-lg font-bold mb-4 leading-tight">
               Subscription Required
             </h2>
-            <p 
-              id="subscription-error-description"
-              className="text-white text-sm font-medium mb-6 leading-relaxed"
-            >
+            <p className="text-white text-sm font-medium mb-6 leading-relaxed">
               Your subscription is not valid or has expired.
             </p>
             <div className="flex justify-center">
