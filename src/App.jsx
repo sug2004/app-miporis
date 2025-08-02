@@ -27,8 +27,18 @@ function App() {
     if (token) {
       Cookies.set('token', token, { secure: true, sameSite: 'Strict', expires: 5 });
       window.history.replaceState({}, document.title, window.location.pathname);
+      // Refresh the page after setting token
+      window.location.reload();
+    } else {
+      // Check if there's already a token in cookies
+      const existingToken = Cookies.get('token');
+      if (!existingToken) {
+        window.location.replace('https://miporis-liart.vercel.app/');
+      }
     }
   }, []);
+  
+
 
   const token = Cookies.get('token');
 
