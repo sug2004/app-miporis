@@ -71,6 +71,17 @@ app.use(cors({
     credentials: true
 }));
 
+// Add this to your main App.js or index.js in app-miporis
+useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+        localStorage.setItem('token', token);
+        // Remove token from URL for security
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}, []);
+
 
 
 app.post(
