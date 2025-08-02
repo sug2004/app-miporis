@@ -23,14 +23,14 @@ function App() {
   const token = Cookies.get('token');
 
   useEffect(() => {
-    if (!token && typeof window !== 'undefined') {
-      window.location.replace("https://miporis.com/login"); // Redirect to external login page
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+      Cookies.set('token', token, { secure: true, sameSite: 'Strict', expires: 5 });
+      // Remove token from URL for security
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [token]);
-
-  if (!token) {
-    return null;
-  }
+  }, []);
 
   const decodedToken = jwtDecode(token);
 

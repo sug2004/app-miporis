@@ -67,20 +67,11 @@ if (!isProduction) {
 
 app.use(cors({
     origin: ['https://www.miporis.com', 'https://miporis.com', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'https://admin.miporis.com', 'https://admin-miporis.vercel.app', 'https://app-miporis-eight.vercel.app', 'https://miporis-liart.vercel.app'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Add this to your main App.js or index.js in app-miporis
-useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
-    if (token) {
-        localStorage.setItem('token', token);
-        // Remove token from URL for security
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-}, []);
 
 
 
