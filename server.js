@@ -66,10 +66,11 @@ if (!isProduction) {
 }
 
 app.use(cors({
-    origin: ['https://www.miporis.com', 'https://miporis.com', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'https://admin.miporis.com'],
+    origin: ['https://www.miporis.com', 'https://miporis.com', 'http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002', 'https://admin.miporis.com', 'https://admin-miporis.vercel.app', 'https://app-miporis-eight.vercel.app', 'https://miporis-liart.vercel.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
+
 
 
 app.post(
