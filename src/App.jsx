@@ -43,16 +43,16 @@ function App() {
     return null;
   }
 
-  // Add null check before decoding
-  let decodedToken;
+let decodedToken = null;
+if (token) {
   try {
-    decodedToken = token ? jwtDecode(token) : null;
+    decodedToken = jwtDecode(token);
   } catch (error) {
     console.error('Invalid token:', error);
     Cookies.remove('token');
-    window.location.replace("https://miporis.com/login");
-    return null;
   }
+}
+
 
   useEffect(() => {
     if (decodedToken && decodedToken.id && decodedToken.id !== '') {
