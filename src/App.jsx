@@ -20,8 +20,7 @@ function App() {
   const [subscriptionValid, setSubscriptionValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
-  const token = Cookies.get('token');
-
+  // Add this useEffect to handle token from URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
@@ -32,7 +31,28 @@ function App() {
     }
   }, []);
 
-  const decodedToken = jwtDecode(token);
+  const token = Cookies.get('token');
+
+  useEffect(() => {
+    if (!token && typeof window !== 'undefined') {
+      window.location.replace("https://miporis.com/login");
+    }
+  }, [token]);
+
+  if (!token) {
+    return null;
+  }
+
+  // Add null check before decoding
+  let decodedToken;
+  try {
+    decodedToken = token ? jwtDecode(token) : null;
+  } catch (error) {
+    console.error('Invalid token:', error);
+    Cookies.remove('token');
+    window.location.replace("https://miporis.com/login");
+    return null;
+  }
 
   useEffect(() => {
     if (decodedToken && decodedToken.id && decodedToken.id !== '') {
