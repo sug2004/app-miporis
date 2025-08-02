@@ -1,0 +1,112 @@
+/* Base styling */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Logo handling */
+.sidebar img {
+    display: block !important;
+    visibility: visible !important;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Version text */
+.sidebar .version {
+    font-size: 10px;
+    color: gray;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Navigation links */
+.sidebar .nav-link {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 6px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Active and hover states */
+.sidebar .nav-link.active {
+    background-color: #EBEBEB;
+    color: #5A97C4;
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover {
+    color: #5A97C4;
+    font-weight: 500;
+}
+
+/* Accessibility focus */
+.sidebar .nav-link:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.sidebar .nav-link:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Mobile touch target size */
+@media (max-width: 768px) {
+    .sidebar .nav-link {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .sidebar {
+        border-width: 2px;
+    }
+
+    .sidebar .nav-link.active {
+        outline: 2px solid currentColor;
+        outline-offset: -2px;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar *,
+    .sidebar *::before,
+    .sidebar *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sidebar {
+        display: none;
+    }
+}
+
+/* Safari fix */
+@supports (-webkit-appearance: none) {
+    .sidebar img {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
